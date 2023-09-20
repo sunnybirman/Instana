@@ -230,7 +230,7 @@ public class Solution {
                 char nextNode = neighbor.getKey();
                 int latency = neighbor.getValue();
 
-                // Ensure we don't revisit nodes to avoid infinite loops
+                // Ensure we don't visit nodes post latency criteria breach to avoid infinite loops
                 if (currentLatency + latency < 30) {
                     dfsWithLatencyLessThan30(nextNode, endNode, currentLatency + latency);
                 }
