@@ -9,6 +9,7 @@ import java.util.*;
 public class Solution {
 
     private Graph graph;
+    private int count;
 
     public Solution(String fileName) {
         graph = new Graph();
@@ -209,6 +210,35 @@ public class Solution {
         stack.pop();
     }
 
+    public int differentTracesWithLatencyLessThan30(char start, char end){
+        count = 0;
+        dfsWithLatencyLessThan30('C', 'C', 0);
+        return count;
+    }
+
+    private void dfsWithLatencyLessThan30(char currentNode, char endNode, int currentLatency) {
+
+        if (currentNode == endNode && currentLatency < 30 && currentLatency>0) {
+            count++;
+        }
+
+        // Get the neighbors of the current node
+        Map<Character, Integer> neighbors = graph.getGraph().get(currentNode);
+
+        if (neighbors != null) {
+            for (Map.Entry<Character, Integer> neighbor : neighbors.entrySet()) {
+                char nextNode = neighbor.getKey();
+                int latency = neighbor.getValue();
+
+                // Ensure we don't revisit nodes to avoid infinite loops
+                if (currentLatency + latency < 30) {
+                    dfsWithLatencyLessThan30(nextNode, endNode, currentLatency + latency);
+                }
+            }
+        }
+    }
+
+
 
     public static void main(String[] args) {
         String inputFile = "input.txt";
@@ -222,5 +252,6 @@ public class Solution {
         solution.countTracesWithNHops('A', 'C', 4);
         System.out.println(solution.shortestTraceLengthBetweenNodes('A', 'C'));
         System.out.println(solution.shortestTraceLengthBetweenNodes('B', 'B'));
+        System.out.println(solution.differentTracesWithLatencyLessThan30('C','C'));
     }
 }
